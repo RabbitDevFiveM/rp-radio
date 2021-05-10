@@ -477,6 +477,15 @@ function on_reconnect()
 
 end
 
+RegisterNetEvent('mail3ee-radio:dropradio')
+AddEventHandler('mail3ee-radio:dropradio', function()
+    Radio:Toggle(false)
+    Radio.On = false
+    Radio:Remove()
+    exports["pma-voice"]:SetMumbleProperty("radioEnabled", false)
+    isCarRadio = false
+end)
+
 Citizen.CreateThread(function()
     while (true) do
         isDead = IsPedDeadOrDying(PlayerPedId())
