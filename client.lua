@@ -123,6 +123,11 @@ for i = 1, #Radio.Commands do
 	end
 end
 
+RegisterNetEvent('mail3ee-radio:startRadio')
+AddEventHandler('mail3ee-radio:startRadio', function(source)
+    Openradio()
+end)
+
 -- Create/Destroy handheld radio object
 function Radio:Toggle(toggle)
 	local playerPed = PlayerPedId()
@@ -580,7 +585,7 @@ Citizen.CreateThread(function()
             elseif checkHasItem(radioConfig.ItemCarRadio) then
                 OpenCarRadio()
             else
-                print("Need Radio")
+                -- print("Need Radio")
             end
 		elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
 			Radio:Remove()
