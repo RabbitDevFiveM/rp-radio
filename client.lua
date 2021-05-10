@@ -49,7 +49,7 @@ Radio.Labels = {
 local unarmed = GetHashKey('weapon_unarmed')
 Radio.Commands = {
 	{
-		Enabled = true, -- Add a command to be able to open/close the radio
+		Enabled = false, -- Add a command to be able to open/close the radio
 		Name = "radio", -- Command name
 		Help = "Toggle hand radio", -- Command help shown in chatbox when typing the command
 		Params = {},
@@ -71,7 +71,7 @@ Radio.Commands = {
 		end,
 	},
 	{
-		Enabled = true, -- Add a command to choose radio frequency
+		Enabled = false, -- Add a command to choose radio frequency
 		Name = "frequency", -- Command name
 		Help = "Change radio frequency", -- Command help shown in chatbox when typing the command
 		Params = {
