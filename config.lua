@@ -51,5 +51,10 @@ radioConfig = {
     AllowRadioWhenClosed = true, -- Allows the radio to be used when not open (uses police radio animation) 
     ItemRadio = 'radio',
     ItemCarRadio = 'car_radio',
-    DropWhenRemove = true -- Drop Player From Radio Chanal When Remove Item
+    DropWhenRemove = true, -- Drop Player From Radio Chanal When Remove Item
+    Jobs = {
+        ['police'] = true,
+        ['ambulance'] = true,
+        ['sheriff'] = true,
+    }
 }
