@@ -1,5 +1,24 @@
+local ESX = nil
+
+local cacheCarRadio = false
+local reconnect = false
+local isCarRadio = false
+local inVehicle = false
+local isDead = false
+
+Citizen.CreateThread(function ()
+	while ESX == nil do
+	 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+	 Citizen.Wait(1)
+	end
+   
+	while ESX.GetPlayerData() == nil do
+	 Citizen.Wait(10)
+	end
+end)
+
 local Radio = {
-	Has = false,
+	Has = true,
 	Open = false,
 	On = false,
 	Enabled = true,
@@ -445,6 +464,84 @@ AddEventHandler('pma-voice:radioActive', function(broadCasting)
 	isBroadcasting = broadCasting
 end)
 
+function on_reconnect()
+    isCarRadio = true
+    Radio:Toggle(false)
+    Radio.On = true
+    exports["pma-voice"]:SetMumbleProperty("radioEnabled", true)
+
+    if Radio.On then
+        SendNUIMessage({ sound = "audio_on", volume = 0.3})
+        Radio:Add(radioConfig.Frequency.Current)
+    end
+
+end
+
+Citizen.CreateThread(function()
+    while (true) do
+        isDead = IsPedDeadOrDying(PlayerPedId())
+        inVehicle = IsPedInAnyVehicle(PlayerPedId(), true)
+
+        Citizen.Wait(500)
+
+        if inVehicle and cacheCarRadio then
+            if not reconnect then
+                reconnect = true
+                on_reconnect()
+            end
+        end
+
+        if isCarRadio and not inVehicle then
+            isCarRadio = false
+            exports['mythic_notify']:SendAlert('error', 'คุณออกจากรถ', 5500, true)
+            Radio:Toggle(false)
+            Radio.On = false
+            Radio:Remove()
+            exports['pma-voice']:SetMumbleProperty("radioEnabled", false)
+            reconnect = false
+        end
+    end
+end)
+
+function Openradio(src, args, raw)
+    local playerPed = PlayerPedId()
+    local isFalling = IsPedFalling(playerPed)
+    local isDead = IsEntityDead(playerPed)
+
+    if not isFalling and Radio.Enabled and Radio.Has and not isDead then
+        Radio:Toggle(not Radio.Open)
+    elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
+        Radio:Toggle(false)
+        Radio.On = false
+        Radio:Remove()
+        exports['pma-voice']:SetMumbleProperty("radioEnabled", false)
+    elseif Radio.Open and isFalling then
+        Radio:Toggle(false)
+    end            
+end
+
+function OpenCarRadio(src, args, raw)
+    local playerPed = PlayerPedId()
+    local isFalling = IsPedFalling(playerPed)
+    local isDead = IsEntityDead(playerPed)
+    if inVehicle then
+        isCarRadio = true
+        if not isFalling and Radio.Enabled and Radio.Has and not isDead then
+            Radio:Toggle(not Radio.Open)
+        elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
+            Radio:Toggle(false)
+            Radio.On = false
+            Radio:Remove()
+            exports['pma-voice']:SetMumbleProperty("radioEnabled", false)
+        elseif Radio.Open and isFalling then
+            Radio:Toggle(false)
+        end
+    else
+        exports['mythic_notify']:SendAlert('error', 'คุณต้องเปิดวิทยุสื่อสารในรถ', 5500, true)
+    end
+        
+end
+
 Citizen.CreateThread(function()
 	-- Add Labels
 	for i = 1, #Radio.Labels do
@@ -469,7 +566,13 @@ Citizen.CreateThread(function()
 
 		-- Open radio settings
 		if isActivatorPressed and isSecondaryPressed and not isFalling and Radio.Enabled and Radio.Has and not isDead then
-			Radio:Toggle(not Radio.Open)
+			if checkHasItem(radioConfig.ItemRadio) then
+                Openradio()
+            elseif checkHasItem(radioConfig.ItemCarRadio) then
+                OpenCarRadio()
+            else
+                print("Need Radio")
+            end
 		elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
 			Radio:Remove()
 			exports["pma-voice"]:setVoiceProperty("radioEnabled", false)
@@ -675,6 +778,17 @@ AddEventHandler("onClientResourceStart", function(resName)
 	
 	Radio.On = false
 end)
+
+checkHasItem = function(item_name)
+    local inventory = ESX.GetPlayerData().inventory
+    for i=1, #inventory do
+      local item = inventory[i]
+      if item_name == item.name and item.count > 0 then
+        return true
+      end
+    end
+    return false
+end
 
 RegisterNetEvent("Radio.Toggle")
 AddEventHandler("Radio.Toggle", function()
