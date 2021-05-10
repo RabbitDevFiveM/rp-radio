@@ -661,9 +661,17 @@ Citizen.CreateThread(function()
 				exports["pma-voice"]:setVoiceProperty("radioEnabled", Radio.On)
 
 				if Radio.On then
+					if isCarRadio then
+                        cacheCarRadio = true
+                        reconnect = true
+                    end
 					SendNUIMessage({ sound = "audio_on", volume = 0.3})
 					Radio:Add(radioConfig.Frequency.Current)
 				else
+					if isCarRadio then
+                        cacheCarRadio = false
+                        reconnect = false
+                    end
 					SendNUIMessage({ sound = "audio_off", volume = 0.5})
 					Radio:Remove()
 				end
