@@ -29,7 +29,7 @@ radioConfig = {
             Pressed = false,
         },
         Broadcast = {
-            Name = "INPUT_VEH_PUSHBIKE_SPRINT", -- Control name
+            Name = "INPUT_REPLAY_SCREENSHOT", -- Control name
             Key = 303, -- U
         },
         ToggleClicks = { -- Toggle radio click sounds
