@@ -2,12 +2,12 @@ radioConfig = {
     Controls = {
         Activator = { -- Open/Close Radio
             Name = "INPUT_REPLAY_START_STOP_RECORDING_SECONDARY", -- Control name
-            Key = 289, -- F2
+            Key = 166, -- F5
         },
         Secondary = {
             Name = "INPUT_SPRINT",
             Key = 21, -- Left Shift
-            Enabled = true, -- Require secondary to be pressed to open radio with Activator
+            Enabled = false, -- Require secondary to be pressed to open radio with Activator
         },
         Toggle = { -- Toggle radio on/off
             Name = "INPUT_CONTEXT", -- Control name
@@ -30,7 +30,7 @@ radioConfig = {
         },
         Broadcast = {
             Name = "INPUT_VEH_PUSHBIKE_SPRINT", -- Control name
-            Key = 137, -- Caps Lock
+            Key = 303, -- U
         },
         ToggleClicks = { -- Toggle radio click sounds
             Name = "INPUT_SELECT_WEAPON", -- Control name
@@ -48,5 +48,8 @@ radioConfig = {
         List = {}, -- Frequency list, Don't touch
         Access = {}, -- List of freqencies a player has access to
     },
-    AllowRadioWhenClosed = false -- Allows the radio to be used when not open (uses police radio animation) 
+    AllowRadioWhenClosed = false, -- Allows the radio to be used when not open (uses police radio animation) 
+    ItemRadio = 'radio',
+    ItemCarRadio = 'car_radio',
+    DropWhenRemove = true -- Drop Player From Radio Chanal When Remove Item
 }
