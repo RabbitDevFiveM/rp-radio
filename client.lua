@@ -6,6 +6,8 @@ local isCarRadio = false
 local inVehicle = false
 local isDead = false
 
+local PlayerData = {}
+
 Citizen.CreateThread(function ()
 	while ESX == nil do
 	 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -15,6 +17,8 @@ Citizen.CreateThread(function ()
 	while ESX.GetPlayerData() == nil do
 	 Citizen.Wait(10)
 	end
+	
+	PlayerData = ESX.GetPlayerData()
 end)
 
 RegisterNetEvent('esx:setJob')
@@ -524,24 +528,25 @@ end)
 
 function Openradio(src, args, raw)
 
-	if radioConfig.Jobs[ESX.PlayerData.job.name] then
-		local playerPed = PlayerPedId()
-		local isFalling = IsPedFalling(playerPed)
-		local isDead = IsEntityDead(playerPed)
-	
-		if not isFalling and Radio.Enabled and Radio.Has and not isDead then
-			Radio:Toggle(not Radio.Open)
-		elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
-			Radio:Toggle(false)
-			Radio.On = false
-			Radio:Remove()
-			exports['pma-voice']:SetMumbleProperty("radioEnabled", false)
-		elseif Radio.Open and isFalling then
-			Radio:Toggle(false)
-		end
+	if PlayerData.job and radioConfig.Jobs[PlayerData.job.name] then
+			local playerPed = PlayerPedId()
+			local isFalling = IsPedFalling(playerPed)
+			local isDead = IsEntityDead(playerPed)
+		
+			if not isFalling and Radio.Enabled and Radio.Has and not isDead then
+				Radio:Toggle(not Radio.Open)
+			elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
+				Radio:Toggle(false)
+				Radio.On = false
+				Radio:Remove()
+				exports['pma-voice']:SetMumbleProperty("radioEnabled", false)
+			elseif Radio.Open and isFalling then
+				Radio:Toggle(false)
+			end
 	else
-		TriggerServerEvent('rp-radio:removeRadio')  
+		TriggerServerEvent('rp-radio:removeRadio')
 	end
+
 
 end
 
