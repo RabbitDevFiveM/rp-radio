@@ -29,8 +29,8 @@ radioConfig = {
             Pressed = false,
         },
         Broadcast = {
-            Name = "INPUT_CHARACTER_WHEEL", -- Control name
-            Key = 19, -- Left Alt
+            Name = "INPUT_REPLAY_SCREENSHOT", -- Control name
+            Key = 303, -- Left Alt
         },
         ToggleClicks = { -- Toggle radio click sounds
             Name = "INPUT_SELECT_WEAPON", -- Control name
