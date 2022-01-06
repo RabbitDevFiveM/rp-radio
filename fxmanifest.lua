@@ -18,12 +18,14 @@ files {
 	"off.ogg",
 }
 
-client_scripts {
+shared_script {
 	"config.lua",
+}
+
+client_scripts {
 	"client.lua",
 }
 
 server_scripts {
-	"config.lua",
 	"server.lua",
 }

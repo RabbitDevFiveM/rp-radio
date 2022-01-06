@@ -1,4 +1,4 @@
-ESX = nil
+local ESX = nil
 
 local cacheCarRadio = false
 local reconnect = false
@@ -590,10 +590,12 @@ Citizen.CreateThread(function()
 
 		-- Open radio settings
 		if isActivatorPressed and isSecondaryPressed and not isFalling and Radio.Enabled and Radio.Has and not isDead then
-			if ESX.Game.CheckHasItem(radioConfig.ItemRadio, 1) then
+			if ESX.Game.CheckHasItem(radioConfig.ItemRadio) then
                 Openradio()
-            elseif ESX.Game.CheckHasItem(radioConfig.ItemCarRadio, 1) then
+            elseif ESX.Game.CheckHasItem(radioConfig.ItemCarRadio) then
                 OpenCarRadio()
+            else
+                -- print("Need Radio")
             end
 		elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
 			Radio:Remove()
