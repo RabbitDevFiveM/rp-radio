@@ -1,4 +1,4 @@
-local ESX = nil
+ESX = nil
 
 local cacheCarRadio = false
 local reconnect = false
