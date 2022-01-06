@@ -590,9 +590,9 @@ Citizen.CreateThread(function()
 
 		-- Open radio settings
 		if isActivatorPressed and isSecondaryPressed and not isFalling and Radio.Enabled and Radio.Has and not isDead then
-			if ESX.Game.CheckHasItem(radioConfig.ItemRadio) then
+			if ESX.Game.CheckHasItem(radioConfig.ItemRadio, 1) then
                 Openradio()
-            elseif ESX.Game.CheckHasItem(radioConfig.ItemCarRadio) then
+            elseif ESX.Game.CheckHasItem(radioConfig.ItemCarRadio, 1) then
                 OpenCarRadio()
             else
                 -- print("Need Radio")
