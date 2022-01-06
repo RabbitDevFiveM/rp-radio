@@ -44,7 +44,7 @@ radioConfig = {
         Current = 1, -- Don't touch
         CurrentIndex = 1, -- Don't touch
         Min = 1, -- Minimum frequency
-        Max = 1000, -- Max number of frequencies
+        Max = 10000, -- Max number of frequencies
         List = {}, -- Frequency list, Don't touch
         Access = {}, -- List of freqencies a player has access to
     },

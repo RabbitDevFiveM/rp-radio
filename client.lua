@@ -1,4 +1,4 @@
-local ESX = nil
+ESX = nil
 
 local cacheCarRadio = false
 local reconnect = false
@@ -590,12 +590,10 @@ Citizen.CreateThread(function()
 
 		-- Open radio settings
 		if isActivatorPressed and isSecondaryPressed and not isFalling and Radio.Enabled and Radio.Has and not isDead then
-			if checkHasItem(radioConfig.ItemRadio) then
+			if ESX.Game.CheckHasItem(radioConfig.ItemRadio, 1) then
                 Openradio()
-            elseif checkHasItem(radioConfig.ItemCarRadio) then
+            elseif ESX.Game.CheckHasItem(radioConfig.ItemCarRadio, 1) then
                 OpenCarRadio()
-            else
-                -- print("Need Radio")
             end
 		elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
 			Radio:Remove()
@@ -728,7 +726,7 @@ Citizen.CreateThread(function()
 					if IsControlJustPressed(0, radioConfig.Controls.Input.Key) then
 						radioConfig.Controls.Input.Pressed = true
 						Citizen.CreateThread(function()
-							DisplayOnscreenKeyboard(1, Radio.Labels[3][1], "", radioConfig.Frequency.Current, "", "", "", 3)
+							DisplayOnscreenKeyboard(1, Radio.Labels[3][1], "", radioConfig.Frequency.Current, "", "", "", 4)
 
 							while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
 								Citizen.Wait(150)
@@ -810,17 +808,6 @@ AddEventHandler("onClientResourceStart", function(resName)
 	
 	Radio.On = false
 end)
-
-checkHasItem = function(item_name)
-    local inventory = ESX.GetPlayerData().inventory
-    for i=1, #inventory do
-      local item = inventory[i]
-      if item_name == item.name and item.count > 0 then
-        return true
-      end
-    end
-    return false
-end
 
 RegisterNetEvent("Radio.Toggle")
 AddEventHandler("Radio.Toggle", function()
