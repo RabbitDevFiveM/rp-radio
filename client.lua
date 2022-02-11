@@ -482,7 +482,7 @@ function on_reconnect()
     isCarRadio = true
     Radio:Toggle(false)
     Radio.On = true
-    exports["pma-voice"]:SetMumbleProperty("radioEnabled", true)
+    exports["pma-voice"]:SetMumbleProperty("radioEnabled", Radio.On)
 
     if Radio.On then
         SendNUIMessage({ sound = "audio_on", volume = 0.3})
@@ -549,7 +549,7 @@ function OpenCarRadio(src, args, raw)
     local isFalling = IsPedFalling(playerPed)
     local isDead = IsEntityDead(playerPed)
     if inVehicle then
-        isCarRadio = true
+        -- isCarRadio = true
         if not isFalling and Radio.Enabled and Radio.Has and not isDead then
             Radio:Toggle(not Radio.Open)
         elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
@@ -676,14 +676,16 @@ Citizen.CreateThread(function()
 				exports["pma-voice"]:setVoiceProperty("radioEnabled", Radio.On)
 
 				if Radio.On then
-					if isCarRadio then
+					if inVehicle then
+						isCarRadio = true
                         cacheCarRadio = true
                         reconnect = true
                     end
 					SendNUIMessage({ sound = "audio_on", volume = 0.3})
 					Radio:Add(radioConfig.Frequency.Current)
 				else
-					if isCarRadio then
+					if inVehicle then
+						isCarRadio = false
                         cacheCarRadio = false
                         reconnect = false
                     end
