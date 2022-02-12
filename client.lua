@@ -511,6 +511,8 @@ Citizen.CreateThread(function()
             if not reconnect then
                 reconnect = true
                 on_reconnect()
+				Citizen.Wait(100)
+				on_reconnect()
             end
         end
 
