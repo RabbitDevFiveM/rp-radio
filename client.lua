@@ -190,6 +190,7 @@ function Radio:Toggle(toggle)
 
 		TaskPlayAnim(playerPed, dictionary, animation, 4.0, -1, -1, 50, 0, false, false, false)
 	else
+		ESX.UI.Menu.CloseAll()
 		TaskPlayAnim(playerPed, dictionary, animation, 4.0, -1, -1, 50, 0, false, false, false)
 
 		Citizen.Wait(700)
