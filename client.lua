@@ -190,7 +190,6 @@ function Radio:Toggle(toggle)
 
 		TaskPlayAnim(playerPed, dictionary, animation, 4.0, -1, -1, 50, 0, false, false, false)
 	else
-		ESX.UI.Menu.CloseAll()
 		TaskPlayAnim(playerPed, dictionary, animation, 4.0, -1, -1, 50, 0, false, false, false)
 
 		Citizen.Wait(700)
@@ -486,7 +485,7 @@ function on_reconnect()
     exports["pma-voice"]:SetMumbleProperty("radioEnabled", true)
 
     if Radio.On then
-        SendNUIMessage({ sound = "audio_on", volume = 0.3})
+        SendNUIMessage({ sound = "audio_on", volume = 0.2})
         Radio:Add(radioConfig.Frequency.Current)
     end
 
@@ -640,7 +639,8 @@ Citizen.CreateThread(function()
 			BeginTextCommandDisplayHelp(Radio.Labels[Radio.On and 2 or 1][1])
 
 			if not Radio.On then
-				AddTextComponentSubstringPlayerName(Radio.Clicks and "~r~disable~w~" or "~g~enable~w~")
+				-- AddTextComponentSubstringPlayerName(Radio.Clicks and "~r~disable~w~" or "~g~enable~w~")
+				AddTextComponentString(Radio.Clicks and "~r~disable~w~" or "~g~enable~w~")
 			end
 
 			AddTextComponentInteger(radioConfig.Frequency.Current)
@@ -690,7 +690,7 @@ Citizen.CreateThread(function()
                         cacheCarRadio = false
                         reconnect = false
                     end
-					SendNUIMessage({ sound = "audio_off", volume = 0.5})
+					SendNUIMessage({ sound = "audio_off", volume = 0.3})
 					Radio:Remove()
 				end
 			end
