@@ -1,5 +1,10 @@
+client_script "@thugly_core/cl_clear.lua"
+server_script "@thugly_core/sv_clear.lua"
+
 fx_version "adamant"
 game "gta5"
+
+lua54 'yes'
 
 name "rp-radio"
 description "An in-game radio which makes use of the pma-voice radio API for FiveM"

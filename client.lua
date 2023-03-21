@@ -179,14 +179,10 @@ function Radio:Toggle(toggle)
 			Citizen.Wait(150)
 		end
 
-		self.Handle = CreateObject(self.Prop, 0.0, 0.0, 0.0, true, true, false)
-
-		local bone = GetPedBoneIndex(playerPed, self.Bone)
-
 		SetCurrentPedWeapon(playerPed, unarmed, true)
-		AttachEntityToEntity(self.Handle, playerPed, bone, self.Offset.x, self.Offset.y, self.Offset.z, self.Rotation.x, self.Rotation.y, self.Rotation.z, true, false, false, false, 2, true)
 
-		SetModelAsNoLongerNeeded(self.Handle)
+		-- ใส่
+		TriggerServerEvent('bt_attacher:set', 'radio', true)
 
 		TaskPlayAnim(playerPed, dictionary, animation, 4.0, -1, -1, 50, 0, false, false, false)
 	else
@@ -196,15 +192,7 @@ function Radio:Toggle(toggle)
 
 		StopAnimTask(playerPed, dictionary, animation, 1.0)
 
-		NetworkRequestControlOfEntity(self.Handle)
-
-		while not NetworkHasControlOfEntity(self.Handle) and count < 5000 do
-			Citizen.Wait(0)
-			count = count + 1
-		end
-		
-		DetachEntity(self.Handle, true, false)
-		DeleteEntity(self.Handle)
+		TriggerServerEvent('bt_attacher:set', 'radio')
 	end
 end
 
